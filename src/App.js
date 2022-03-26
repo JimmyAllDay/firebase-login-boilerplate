@@ -1,24 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import LogInModal from "./Components/LogIn/LogInModal";
+import NavBar from "./Components/Nav/NavBar";
+
+import "./Styles/App.scss";
+
+import { Container } from "react-bootstrap";
 
 function App() {
+  const [authed] = useState(true);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container fluid className="p-0 h-100 App">
+      <NavBar authed={authed} />
+      {!authed && <LogInModal />}
+    </Container>
   );
 }
 

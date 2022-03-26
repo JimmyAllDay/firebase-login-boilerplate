@@ -1,0 +1,8 @@
+$theme-colors: (
+  "primary": cornflowerblue,
+  "dark": rgb(43, 43, 43),
+  "light": white,
+  "info": green,
+);
+
+@import "~bootstrap/scss/bootstrap";
