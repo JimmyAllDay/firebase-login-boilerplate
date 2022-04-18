@@ -65,7 +65,13 @@ const logInWithEmailAndPassword = async (email, password) => {
   }
 };
 
-const registerWithEmailAndPassword = async (name, email, password) => {
+const registerWithEmailAndPassword = async (
+  firstName,
+  lastName,
+  email,
+  password
+) => {
+  const name = firstName + " " + lastName;
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
@@ -81,9 +87,16 @@ const registerWithEmailAndPassword = async (name, email, password) => {
   }
 };
 
+// const registerWithEmailAndPassword = (email, password) => {
+//   createUserWithEmailAndPassword(auth, email, password)
+//     .then((res) => console.log(res))
+//     .catch((err) => console.log(err));
+// };
+
 const sendPasswordReset = async (email) => {
   try {
     await sendPasswordResetEmail(auth, email);
+    console.log(auth, email);
     alert("Password reset link sent!");
   } catch (err) {
     console.error(err);
