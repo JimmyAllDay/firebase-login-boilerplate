@@ -1,51 +1,90 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase";
 
 import { useAuthValue } from "../utils/AuthContext";
 
-import { Container, Col, Navbar, Offcanvas, Nav } from "react-bootstrap";
+import { Link } from "react-router-dom";
+
+import { Icon } from "@iconify/react";
+
+import {
+  Container,
+  Col,
+  Navbar,
+  Offcanvas,
+  Nav,
+  Button,
+} from "react-bootstrap";
 
 export default function NavBar() {
-  const user = useAuthValue();
-  console.log(user);
+  const { currentUser } = useAuthValue();
+  const [showLinks, setShowLinks] = useState(false);
+
+  useEffect(() => {
+    currentUser && setShowLinks(true);
+  }, [currentUser]);
+
   return (
     <Navbar bg="light" expand={false}>
       <Container fluid>
         <Col className="">
-          <Navbar.Brand href="#">Protocol</Navbar.Brand>
+          <Navbar.Brand as={Link} to="/">
+            Protocol
+          </Navbar.Brand>
         </Col>
-        <Col className="">
-          {user && (
-            <Nav className="d-none d-sm-flex flex-row justify-content-evenly">
-              <Nav.Link href="#action1">Home</Nav.Link>
-              <Nav.Link href="#action2">Upload</Nav.Link>
-            </Nav>
-          )}
-        </Col>
-        <Col className=" d-flex justify-content-end">
-          {user && (
-            <Navbar.Toggle
-              aria-controls="offcanvasNavbar"
-              className="d-sm-none"
-            />
-          )}
-          <Navbar.Offcanvas
-            id="offcanvasNavbar"
-            aria-labelledby="offcanvasNavbarLabel"
-            placement="end"
-          >
-            <Offcanvas.Header closeButton>
-              <Offcanvas.Title id="offcanvasNavbarLabel">
-                Protocol
-              </Offcanvas.Title>
-            </Offcanvas.Header>
-            <Offcanvas.Body>
-              <Nav className="d-flex flex-column align-items-center">
-                <Nav.Link href="#action1">Home</Nav.Link>
-                <Nav.Link href="#action2">Upload</Nav.Link>
+        {showLinks && (
+          <>
+            <Col>
+              <Nav className="d-none d-sm-flex flex-row justify-content-evenly">
+                <Nav.Link as={Link} to="/">
+                  Home
+                </Nav.Link>
+                <Nav.Link as={Link} to="/upload">
+                  Upload
+                </Nav.Link>
               </Nav>
-            </Offcanvas.Body>
-          </Navbar.Offcanvas>
-        </Col>
+            </Col>
+            <Col className="d-flex justify-content-end">
+              <Nav.Link as={Link} to="/user-profile" className="ms-5 me-auto">
+                <h2 className="my-auto">
+                  <Icon icon="carbon:user-avatar" />
+                </h2>
+              </Nav.Link>
+
+              <Button
+                variant="outline-primary"
+                size="sm"
+                className="my-auto me-2"
+                onClick={() => signOut(auth)}
+              >
+                Log Out
+              </Button>
+              <Navbar.Toggle
+                aria-controls="offcanvasNavbar"
+                className="d-sm-none"
+              />
+              <Navbar.Offcanvas
+                id="offcanvasNavbar"
+                aria-labelledby="offcanvasNavbarLabel"
+                placement="end"
+              >
+                <Offcanvas.Header closeButton>
+                  <Offcanvas.Title id="offcanvasNavbarLabel">
+                    Protocol
+                  </Offcanvas.Title>
+                </Offcanvas.Header>
+                <Offcanvas.Body>
+                  <Nav className="d-flex flex-column align-items-center">
+                    <Nav.Link href="#action1">Home</Nav.Link>
+                    <Nav.Link href="#action2">Upload</Nav.Link>
+                  </Nav>
+                </Offcanvas.Body>
+              </Navbar.Offcanvas>
+            </Col>
+          </>
+        )}
       </Container>
     </Navbar>
   );

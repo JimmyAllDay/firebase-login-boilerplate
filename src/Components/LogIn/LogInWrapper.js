@@ -3,49 +3,97 @@ import LogInSignInToggle from "./LoginSignInToggle";
 import LogInModalButton from "./LogInModalButton";
 
 import { useLocation } from "react-router";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
-import { Icon } from "@iconify/react";
+import { auth } from "../../firebase";
+import { useAuthValue } from "../utils/AuthContext";
 
 import {
-  logInWithEmailAndPassword,
-  registerWithEmailAndPassword,
-  sendPasswordReset,
-} from "../../firebase";
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 
 import { Container, Row, Col } from "react-bootstrap";
 
 export default function LogInWrapper({ component }) {
+  const history = useNavigate();
   const path = useLocation().pathname;
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const { setTimeActive } = useAuthValue();
   const [email, setEmail] = useState("");
-  const [password1, setPassword1] = useState("");
-  const [password2, setPassword2] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
 
   const emailHandler = (e) => {
-    console.log("log in email: ", email);
     setEmail(e.target.value);
   };
 
-  const passwordHandler1 = (e) => {
-    console.log("log in password1: ", password1);
-    setPassword1(e.target.value);
+  const passwordHandler = (e) => {
+    setPassword(e.target.value);
   };
 
-  const passwordHandler2 = (e) => {
-    console.log("log in password2: ", password2);
-    setPassword2(e.target.value);
+  const confirmPasswordHandler = (e) => {
+    setConfirmPassword(e.target.value);
   };
 
-  const firstNameHandler = (e) => {
-    console.log("sign up first name: ", firstName);
-    setFirstName(e.target.value);
+  const resetText = (
+    <p className="mx-auto" style={{ fontSize: "0.8em", margin: "0" }}>
+      Forgot password? Reset{" "}
+      <Link to="/password-reset">
+        <span className="text-primary">here</span>
+      </Link>
+      .
+    </p>
+  );
+
+  const validatePassword = () => {
+    let isValid = true;
+    if (password !== "" && confirmPassword !== "") {
+      if (password !== confirmPassword) {
+        isValid = false;
+        setError("Passwords does not match");
+      }
+    }
+    return isValid;
   };
 
-  const lastNameHandler = (e) => {
-    console.log("sign up last name: ", lastName);
-    setLastName(e.target.value);
+  const register = () => {
+    setError("");
+    console.log(validatePassword());
+    if (validatePassword()) {
+      // Create a new user with email and password using firebase
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((res) => {
+          sendEmailVerification(auth.currentUser);
+          history("/verify-email");
+          console.log(res.user);
+        })
+        .catch((err) => {
+          setError(err.message);
+          console.log(err, error);
+        });
+    }
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+  };
+
+  const login = () => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        if (!auth.currentUser.emailVerified) {
+          sendEmailVerification(auth.currentUser)
+            .then(() => {
+              setTimeActive(true);
+              history("/verify-email");
+            })
+            .catch((err) => alert(err.message));
+        } else {
+          history("/");
+        }
+      })
+      .catch((err) => setError(err.message));
   };
 
   const wrapperStyle = { height: "500px" };
@@ -56,14 +104,6 @@ export default function LogInWrapper({ component }) {
     borderRight: "1px black solid",
     borderBottom: "1px black solid",
   };
-
-  const backButton = (
-    <Link to="/signup-1">
-      <h1>
-        <Icon icon="akar-icons:arrow-back-thick" />
-      </h1>
-    </Link>
-  );
 
   return (
     <Container fluid className="p-3 d-flex flex-column mt-5">
@@ -79,11 +119,7 @@ export default function LogInWrapper({ component }) {
         >
           <div className="d-flex">
             <LogInSignInToggle path={path} label="Log In" linkPath="/login" />
-            <LogInSignInToggle
-              path={path}
-              label="Sign Up"
-              linkPath="/signup-1"
-            />
+            <LogInSignInToggle path={path} label="Sign Up" linkPath="/signup" />
             <div className="flex-grow-1 border-bottom border-start border-dark"></div>
           </div>
 
@@ -91,27 +127,14 @@ export default function LogInWrapper({ component }) {
             className="d-flex flex-column align-items-stretch p-2"
             style={modalStyle}
           >
-            <h5 className="mt-4 ms-1">
-              Protocol {path === "/signup-2" && backButton}
-            </h5>
+            <h5 className="mt-4 ms-1">Protocol</h5>
             {React.cloneElement(component, {
-              path: path,
-              firstNameHandler: firstNameHandler,
-              lastNameHandler: lastNameHandler,
+              resetText: resetText,
               emailHandler: emailHandler,
-              passwordHandler1: passwordHandler1,
-              passwordHandler2: passwordHandler2,
+              passwordHandler: passwordHandler,
+              confirmPasswordHandler: confirmPasswordHandler,
             })}
-            <LogInModalButton
-              firebaseLogin={logInWithEmailAndPassword}
-              firebaseRegister={registerWithEmailAndPassword}
-              sendPasswordReset={sendPasswordReset}
-              email={email}
-              password1={password1}
-              password2={password2}
-              firstName={firstName}
-              lastName={lastName}
-            />
+            <LogInModalButton login={login} register={register} />
           </div>
         </Col>
       </Row>

@@ -11,9 +11,6 @@ export default function LogInSignInToggle({ linkPath, label, path }) {
         .filter((letter) => letter !== " ")
         .join(""));
 
-  const convertPath = (path) =>
-    path === "/login" ? path : path.substring(0, path.length - 2);
-
   const styles = {
     active: {
       width: "90px",
@@ -30,11 +27,7 @@ export default function LogInSignInToggle({ linkPath, label, path }) {
     <Link to={linkPath}>
       <div
         className="d-flex justify-content-center border-top border-dark border-start"
-        style={
-          convertLabel(label) === convertPath(path)
-            ? styles.active
-            : styles.inactive
-        }
+        style={convertLabel(label) === path ? styles.active : styles.inactive}
       >
         {label}
       </div>
