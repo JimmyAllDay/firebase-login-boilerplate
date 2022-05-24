@@ -58,7 +58,7 @@ export default function VerifyEmail() {
     <Container fluid className="p-0 d-flex">
       <Row className="mx-auto mt-5">
         <Col className="border d-flex flex-column rounded-3 p-4">
-          <h1 className="mx-auto mx-3">Welcome to Protocol</h1>
+          <h1 className="mx-auto mx-3">Welcome to Brand</h1>
           <p className="mx-auto my-3">
             <strong>A Verification email has been sent to:</strong>
             <br />

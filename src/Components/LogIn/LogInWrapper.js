@@ -127,7 +127,7 @@ export default function LogInWrapper({ component }) {
             className="d-flex flex-column align-items-stretch p-2"
             style={modalStyle}
           >
-            <h5 className="mt-4 ms-1">Protocol</h5>
+            <h5 className="mt-4 ms-1">Brand</h5>
             {React.cloneElement(component, {
               resetText: resetText,
               emailHandler: emailHandler,

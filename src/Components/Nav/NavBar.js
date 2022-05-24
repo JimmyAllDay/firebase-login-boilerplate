@@ -23,7 +23,9 @@ export default function NavBar() {
   const [showLinks, setShowLinks] = useState(false);
 
   useEffect(() => {
-    currentUser && setShowLinks(true);
+    currentUser && currentUser.emailVerified
+      ? setShowLinks(true)
+      : setShowLinks(false);
   }, [currentUser]);
 
   return (
@@ -31,7 +33,7 @@ export default function NavBar() {
       <Container fluid>
         <Col className="">
           <Navbar.Brand as={Link} to="/">
-            Protocol
+            Brand
           </Navbar.Brand>
         </Col>
         {showLinks && (
@@ -40,9 +42,6 @@ export default function NavBar() {
               <Nav className="d-none d-sm-flex flex-row justify-content-evenly">
                 <Nav.Link as={Link} to="/">
                   Home
-                </Nav.Link>
-                <Nav.Link as={Link} to="/upload">
-                  Upload
                 </Nav.Link>
               </Nav>
             </Col>
@@ -72,13 +71,12 @@ export default function NavBar() {
               >
                 <Offcanvas.Header closeButton>
                   <Offcanvas.Title id="offcanvasNavbarLabel">
-                    Protocol
+                    Brand
                   </Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
                   <Nav className="d-flex flex-column align-items-center">
                     <Nav.Link href="#action1">Home</Nav.Link>
-                    <Nav.Link href="#action2">Upload</Nav.Link>
                   </Nav>
                 </Offcanvas.Body>
               </Navbar.Offcanvas>

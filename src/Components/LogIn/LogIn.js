@@ -4,7 +4,17 @@ import { Link } from "react-router-dom";
 
 import { Container, Form } from "react-bootstrap";
 
+import { useAuthValue } from "../utils/AuthContext";
+
+import { Navigate } from "react-router-dom";
+
 export default function LogIn({ emailHandler, passwordHandler, resetText }) {
+  const { currentUser } = useAuthValue();
+
+  if (currentUser) {
+    return <Navigate to="/" replace />;
+  }
+
   return (
     <Container fluid className="d-flex flex-column h-75">
       <h1 className="my-2 align-self-center">Log In</h1>

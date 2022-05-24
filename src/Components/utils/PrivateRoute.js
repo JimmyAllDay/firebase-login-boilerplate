@@ -6,7 +6,6 @@ import { useAuthValue } from "../utils/AuthContext";
 
 export default function PrivateRoute({ children }) {
   const { currentUser } = useAuthValue();
-  console.log(currentUser);
 
   if (!currentUser?.emailVerified) {
     return <Navigate to="/login" replace />;
