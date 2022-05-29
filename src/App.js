@@ -22,7 +22,7 @@ function App() {
   }, []);
 
   return (
-    <Container fluid className="p-0 h-100 App">
+    <Container fluid className="p-0 h-100 App" data-testid="app">
       <AuthProvider value={{ currentUser, timeActive, setTimeActive }}>
         <NavBar />
         <Routing />
@@ -32,3 +32,7 @@ function App() {
 }
 
 export default App;
+
+//TODO: Tests
+//TODO: Disable button on no input
+//TODO: Set up reset password

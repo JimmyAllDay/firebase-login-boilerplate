@@ -29,10 +29,15 @@ export default function NavBar() {
   }, [currentUser]);
 
   return (
-    <Navbar bg="light" expand={false}>
+    <Navbar
+      bg="light"
+      expand={false}
+      className="border border-bottom"
+      data-testid="navbar"
+    >
       <Container fluid>
         <Col className="">
-          <Navbar.Brand as={Link} to="/">
+          <Navbar.Brand as={Link} to="/" data-testid="nav-logo">
             Brand
           </Navbar.Brand>
         </Col>

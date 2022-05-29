@@ -1,14 +1,14 @@
 import React from "react";
 
 import PrivateRoute from "./PrivateRoute";
-import LogIn from "../LogIn/LogIn";
-import SignUp from "../LogIn/SignUp";
-import PasswordReset from "../LogIn/PasswordReset";
+import LogIn from "../Authentication/LogIn/LogIn";
+import SignUp from "../Authentication/SignUp/SignUp";
+import PasswordReset from "../Authentication/PasswordReset/PasswordReset";
 import Home from "../Home/Home";
-import VerifyEmail from "../LogIn/VerifyEmail";
+import VerifyEmail from "../Authentication/VerifyEmail/VerifyEmail";
 import Profile from "../Profile/Profile";
-import NotFound from "./NotFound";
-import LogInWrapper from "../LogIn/LogInWrapper";
+import NotFound from "../NotFound/NotFound";
+import LogInWrapper from "../Authentication/LoginWrapper/LogInWrapper";
 
 import { Routes, Route } from "react-router-dom";
 

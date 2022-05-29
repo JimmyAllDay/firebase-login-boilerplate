@@ -1,0 +1,14 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "rules": {
+    "semi": 2,
+    "eslint no-unsafe-optional-chaining": "off"
+  },
+  "ignorePatterns": ["*.test.js"]
+}

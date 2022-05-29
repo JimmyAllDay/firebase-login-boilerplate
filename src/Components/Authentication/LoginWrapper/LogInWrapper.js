@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import LogInSignInToggle from "./LoginSignInToggle";
-import LogInModalButton from "./LogInModalButton";
+import LogInSignInToggle from "../LoginSigninToggle/LoginSignInToggle";
+import LogInModalButton from "../LoginModalButton/LogInModalButton";
 
 import { useLocation } from "react-router";
 import { useNavigate, Link } from "react-router-dom";
 
-import { auth } from "../../firebase";
-import { useAuthValue } from "../utils/AuthContext";
+import { auth } from "../../../firebase";
+import { useAuthValue } from "../../utils/AuthContext";
 
 import {
   createUserWithEmailAndPassword,
@@ -38,9 +38,13 @@ export default function LogInWrapper({ component }) {
   };
 
   const resetText = (
-    <p className="mx-auto" style={{ fontSize: "0.8em", margin: "0" }}>
+    <p
+      className="mx-auto"
+      style={{ fontSize: "0.8em", margin: "0" }}
+      data-testid="reset-text"
+    >
       Forgot password? Reset{" "}
-      <Link to="/password-reset">
+      <Link to="/password-reset" data-testid="pass-reset-link">
         <span className="text-primary">here</span>
       </Link>
       .
@@ -52,7 +56,7 @@ export default function LogInWrapper({ component }) {
     if (password !== "" && confirmPassword !== "") {
       if (password !== confirmPassword) {
         isValid = false;
-        setError("Passwords does not match");
+        setError("Password does not match");
       }
     }
     return isValid;
@@ -60,7 +64,6 @@ export default function LogInWrapper({ component }) {
 
   const register = () => {
     setError("");
-    console.log(validatePassword());
     if (validatePassword()) {
       // Create a new user with email and password using firebase
       createUserWithEmailAndPassword(auth, email, password)
@@ -106,7 +109,11 @@ export default function LogInWrapper({ component }) {
   };
 
   return (
-    <Container fluid className="p-3 d-flex flex-column mt-5">
+    <Container
+      fluid
+      className="p-3 d-flex flex-column mt-5"
+      data-testid="login"
+    >
       <Row className="d-flex">
         <Col
           xs={11}
@@ -127,14 +134,22 @@ export default function LogInWrapper({ component }) {
             className="d-flex flex-column align-items-stretch p-2"
             style={modalStyle}
           >
-            <h5 className="mt-4 ms-1">Brand</h5>
+            <h5 className="mt-4 ms-1" data-testid="login-logo">
+              Brand
+            </h5>
             {React.cloneElement(component, {
               resetText: resetText,
               emailHandler: emailHandler,
               passwordHandler: passwordHandler,
               confirmPasswordHandler: confirmPasswordHandler,
             })}
-            <LogInModalButton login={login} register={register} />
+            <LogInModalButton
+              login={login}
+              register={register}
+              email={email}
+              password={password}
+              confirmPassword={confirmPassword}
+            />
           </div>
         </Col>
       </Row>

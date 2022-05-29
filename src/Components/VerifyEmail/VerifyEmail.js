@@ -10,7 +10,6 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 
 export default function VerifyEmail() {
   const { currentUser, timeActive, setTimeActive } = useAuthValue();
-  console.log(currentUser);
   const [time, setTime] = useState(60);
   const navigate = useNavigate();
 

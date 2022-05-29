@@ -14,7 +14,7 @@ export default function LogInSignInToggle({ linkPath, label, path }) {
   const styles = {
     active: {
       width: "90px",
-      pointerEvents: "none", //! this isn't working
+      pointerEvents: "none",
     },
     inactive: {
       width: "90px",
@@ -24,7 +24,7 @@ export default function LogInSignInToggle({ linkPath, label, path }) {
   };
 
   return (
-    <Link to={linkPath}>
+    <Link to={linkPath} data-testid="log-sig-toggle">
       <div
         className="d-flex justify-content-center border-top border-dark border-start"
         style={convertLabel(label) === path ? styles.active : styles.inactive}
